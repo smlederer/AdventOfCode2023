@@ -28,7 +28,7 @@ class matrix():
             for i in range(empty_x):
                 leaf = []
                 for j in range(empty_y):
-                    leaf.append(['.'])
+                    leaf.append('.')
                 self.matrix.append(leaf)
         else:
             self.matrix = [list(x) for x in matrix_list]
@@ -89,3 +89,16 @@ class matrix():
                 if str(self.get_cell(i,j)) == str(value):
                     found_coords.append([i,j])
         return found_coords
+    
+
+### Vector operation
+    
+def vector_op(vector1:list,vector2:list,operation:str,verbose = False):
+    final = []
+    if len(vector1)==len(vector2):
+        for i in range(len(vector1)):
+            if verbose:
+                final.append(eval(operation))
+            else:
+                final.append(eval('vector1[i]'+operation+'vector2[i]'))
+    return final
