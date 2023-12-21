@@ -59,7 +59,7 @@ class matrix():
         else:
             return False
 
-    def neighbor_from_coord(self,x,y,diagonal=False)->list:
+    def neighbor_from_coord(self,x,y,diagonal=False,clamped=True)->list:
         #finds the neighbors of a cell including diagonal
         #add dir? can return n[1,0]
         #or maybe that should be a separete method where you save DIR.NORTH = [1,0] as a singleton
@@ -67,17 +67,20 @@ class matrix():
         checks = self.directions['core'].values()
         if diagonal:
             checks+= self.directions['expanded'].values()
-
+        #todo, rewrite this with the vector_op
         for coor in checks:
             neigh_x = x+coor[0]
             neigh_y = y+coor[1]
-            if self.clamp(neigh_x,neigh_y):
+            if clamped:
+                if self.clamp(neigh_x,neigh_y):
+                    coords.append([neigh_x,neigh_y])
+            else:
                 coords.append([neigh_x,neigh_y])
         return coords
 
-    def get_neighbor_content(self,x,y,diagonal = False)->list:
+    def get_neighbor_content(self,x,y,diagonal = False,clamped=True)->list:
         neighbor_dic = []
-        for i in self.neighbor_from_coord(x,y,diagonal):
+        for i in self.neighbor_from_coord(x,y,diagonal,clamped):
             neighbor_dic.append({'coord':(i[0],i[1]),'content':self.get_cell(*i)})
         return neighbor_dic
 
@@ -90,6 +93,30 @@ class matrix():
                     found_coords.append([i,j])
         return found_coords
     
+    
+    #problem 21 appending matrix to the matrix for infinite scroll
+
+    def append(self,matrix2:list,direction:str)->None:
+        new_matrix = []
+        d = direction.lower()
+        if d in ('e','w','east','west','left','right','l','r'):
+            for i in range(len(self.matrix)):
+                if d in ('w','west','left','l'):
+                    new_matrix.append(matrix2[i] + self.matrix[i])
+                else:
+                    new_matrix.append(self.matrix[i] + matrix2[i])
+
+        elif d in ('d','down','south','s','u','up','north','n'):
+            if d in ('d','down','south','s'):
+                new_matrix = self.matrix + matrix2
+            else:
+                new_matrix = matrix2 + self.matrix
+        self.__init__(new_matrix)
+
+    def nice_print(self):
+        return [''.join(x) for x in self.matrix]
+
+
 
 ### Vector operation
     
@@ -102,3 +129,4 @@ def vector_op(vector1:list,vector2:list,operation:str,verbose = False):
             else:
                 final.append(eval('vector1[i]'+operation+'vector2[i]'))
     return final
+
