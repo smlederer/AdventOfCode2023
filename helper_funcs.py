@@ -25,9 +25,9 @@ class matrix():
     def __init__(self,matrix_list:list,empty_x=0,empty_y=0):
         if (matrix_list==None):
             self.matrix = []
-            for i in range(empty_x):
+            for i in range(empty_y):
                 leaf = []
-                for j in range(empty_y):
+                for j in range(empty_x):
                     leaf.append('.')
                 self.matrix.append(leaf)
         else:
@@ -130,3 +130,9 @@ def vector_op(vector1:list,vector2:list,operation:str,verbose = False):
                 final.append(eval('vector1[i]'+operation+'vector2[i]'))
     return final
 
+def vector_scale(vector:list,scale:int):
+    final = []
+    for i in vector:
+        final.append(int(i)*scale)
+
+    return final
