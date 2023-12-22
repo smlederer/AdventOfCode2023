@@ -39,7 +39,7 @@ class matrix():
     #constant stuff:
     
     def init_directions(self)->list:
-        self.directions = {'core':{'N':[1,0],'E':[0,1],'W':[0,-1],'S':[-1,0]},'expaned':{'SW':[-1,-1],'SE':[-1,1],'NE':[1,1],'NW':[1,-1]}}
+        self.directions = {'core':{'N':[1,0],'E':[0,1],'W':[0,-1],'S':[-1,0]},'expanded':{'SW':[-1,-1],'SE':[-1,1],'NE':[1,1],'NW':[1,-1]}}
 
 
     def init_dim(self)->list:
@@ -64,9 +64,9 @@ class matrix():
         #add dir? can return n[1,0]
         #or maybe that should be a separete method where you save DIR.NORTH = [1,0] as a singleton
         coords = []
-        checks = self.directions['core'].values()
+        checks = list(self.directions['core'].values())
         if diagonal:
-            checks+= self.directions['expanded'].values()
+            checks += list(self.directions['expanded'].values())
         #todo, rewrite this with the vector_op
         for coor in checks:
             neigh_x = x+coor[0]
